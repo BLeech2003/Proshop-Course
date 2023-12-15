@@ -6,6 +6,7 @@ I did this course for the purpose of learning these skills to use them in my fin
 as well as in future tasks
 To run this project install the following modules
 bootstrap, react-bootstrap, react-icons, react-router-dom,
-react-router-bootstrap
+react-router-bootstrap, axios, express, concurrently
+
 
 

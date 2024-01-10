@@ -1,5 +1,8 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Order from "../models/orderModel.js";
+// import Product from '../models/productModel.js';
+// import { calcPrices } from '../utils/calcPrices.js';
+// import { verifyPayPalPayment, checkIfNewTransaction } from '../utils/paypal.js';
 
 // @desc create new order
 // @route POST /api/orders
@@ -52,6 +55,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route GET /api/orders.:id
 // @access private
 const getOrderById = asyncHandler(async (req, res) => {
+  console.log(req.params.id);
   const order = await Order.findById(req.params.id).populate(
     "user",
     "name email"
@@ -66,14 +70,29 @@ const getOrderById = asyncHandler(async (req, res) => {
 });
 
 // @desc update order to paid
-// @route GET /api/orders/:id/pay
+// @route PUT /api/orders/:id/pay
 // @access private
 const updateOrderToPay = asyncHandler(async (req, res) => {
-  res.send("paid");
+ const order = await Order.findById(req.params.id);
+ console.log(order);
+ if(order){
+  order.isPaid = true;
+  order.paidAt = Date.now();
+  order.paymentMethod ={
+    id: req.body.id,
+    status: req.body.status,
+    update_time: req.body.update_time,
+    email_address: req.body.payer.email_address,
+  };
+
+  const updatedOrder = await order.save();
+
+  res.status(200).json(updatedOrder);
+ }
 });
 
 // @desc update order to delivered
-// @route GET /api/orders/:id/deliver
+// @route PUT /api/orders/:id/deliver
 // @access private/admin
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
   res.send("delivered");

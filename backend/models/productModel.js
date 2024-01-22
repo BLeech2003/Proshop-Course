@@ -35,6 +35,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         reuired: true,
     },
+    category:{
+        type: String,
+        reuired: true,
+    },
     description:{
         type: String,
         required: true,

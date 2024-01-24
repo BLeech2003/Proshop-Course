@@ -6,20 +6,21 @@ import logo from "../assets/logo.png";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/usersApiSlice";
-import {logout} from "../slices/authSlice";
+import { logout } from "../slices/authSlice";
+import SearchBox from "./SearchBox";
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
   const [logoutApiCall] = useLogoutMutation();
-  const logoutHandler = async()=>{
-   try{
-    await logoutApiCall().unwrap();
-    dispatch(logout());
-    navigate("/login");
-   }catch(err){
-    console.log(err);
-   }
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
+              <SearchBox/>
               <LinkContainer to="/cart">
                 <Nav.Link to="/cart">
                   <FaShoppingCart />
@@ -67,18 +69,18 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
-              {userInfo && userInfo.isAdmin &&(
+              {userInfo && userInfo.isAdmin && (
                 <NavDropdown title={"Admin"} id="adminMenu">
-                <LinkContainer to="/admin/productList">
-                  <NavDropdown.Item>Products</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to="/admin/userList">
-                  <NavDropdown.Item>Users</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to="/admin/orderList">
-                  <NavDropdown.Item>Orders</NavDropdown.Item>
-                </LinkContainer>
-              </NavDropdown>
+                  <LinkContainer to="/admin/productList">
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/userList">
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/orderList">
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
